@@ -16,11 +16,15 @@ public class StringCalculator {
     private int sum(String[] parts) {
         int sum = 0;
         for (String part : parts) {
-            if (part.isBlank()) {
-                continue;
-            }
-            sum += NumberValidator.toInt(part);
+            sum += calculateOne(part);
         }
         return sum;
+    }
+
+    private int calculateOne(String part) {
+        if (part.isBlank()) {
+            return 0;
+        }
+        return NumberValidator.toInt(part);
     }
 }
