@@ -53,20 +53,23 @@ public class Application {
         int sum = 0;
 
         for (String part : parts) {
-            if (part.trim().isEmpty()) {
+            if (part.trim().isBlank()) {
                 continue;
             }
-
-            try {
-                int num = Integer.parseInt(part);
-                if (num < 0) {
-                    throw new IllegalArgumentException("음수는 입력할 수 없습니다");
-                }
-                sum += num;
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("숫자가 아닌 값이 포함되어 있습니다");
-            }
+            sum += toInt(part);
         }
         return sum;
+    }
+
+    private static int toInt(String part) {
+        try {
+            int number = Integer.parseInt(part);
+            if (number < 0) {
+                throw new IllegalArgumentException("음수는 입력할 수 없습니다");
+            }
+            return number;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자가 아닌 값이 포함되어 있습니다");
+        }
     }
 }
