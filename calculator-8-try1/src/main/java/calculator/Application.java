@@ -17,19 +17,9 @@ public class Application {
             return 0;
         }
 
-        String delimiter = ",|:";
-        String numbers = input;
-
-        if (input.startsWith("//")) {
-            int delimiterIndex = input.indexOf("\\n");
-            if (delimiterIndex != -1) {
-                String customDelimiter = input.substring(2, delimiterIndex);
-                // split에서 특수문자가 오작동하지 않도록 처리
-                delimiter = Pattern.quote(customDelimiter);
-                // 숫자 부분 추출 (\n 다음부터 끝까지)
-                numbers = input.substring(delimiterIndex + 2);
-            }
-        }
+        String delimiter = getDelimiter(input);
+        
+        String numbers = getNumberPart(input);
 
         String[] strings = numbers.split(delimiter);
         int sum = 0;
@@ -48,5 +38,30 @@ public class Application {
             }
         }
         return sum;
+    }
+
+    private static String getDelimiter(String input) {
+        String delimiter = ",|:";
+
+        if (input.startsWith("//")) {
+            int delimiterIndex = input.indexOf("\\n");
+            if (delimiterIndex != -1) {
+                String customDelimiter = input.substring(2, delimiterIndex);
+                // split에서 특수문자가 오작동하지 않도록 처리
+                delimiter = Pattern.quote(customDelimiter);
+            }
+        }
+
+        return delimiter;
+    }
+
+    private static String getNumberPart(String input) {
+        if (input.startsWith("//")) {
+            int delimiterIndex = input.indexOf("\\n");
+            if (delimiterIndex != -1) {
+                return input.substring(delimiterIndex + 2);
+            }
+        }
+        return input;
     }
 }
