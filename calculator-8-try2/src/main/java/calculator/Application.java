@@ -13,39 +13,48 @@ public class Application {
             return;
         }
 
+        String[] parts = parse(input);
+
+        int result = sum(parts);
+
+        System.out.println("결과 : " + result);
+    }
+
+    private static String[] parse(String input) {
         String delimiter = ",|:";
-        String numbers = input;
 
         if (input.startsWith("//")) {
             int delimiterIndex = input.indexOf("\\n");
             if (delimiterIndex != -1) {
                 String customDelimiter = input.substring(2, delimiterIndex);
                 delimiter = Pattern.quote(customDelimiter); // 특수문자 구분자 방어
-                numbers = input.substring(delimiterIndex + 2);
+                input = input.substring(delimiterIndex + 2);
             }
         }
 
-        String[] parts = numbers.split(delimiter);
+        return input.split(delimiter);
+    }
 
+    private static int sum(String[] parts) {
         int sum = 0;
         for (String part : parts) {
-
             if (part.trim().isEmpty()) { // "1, ,2" 같은 경우 빈 문자열 무시
                 continue;
             }
-
-            try {
-                int num = Integer.parseInt(part); // try 블록 안으로 이동 (외부에 있을 시 문자가 들어오면 에러)
-                if (num < 0) {
-                    throw new IllegalArgumentException("음수가 잘못 입력되었습니다.");
-                }
-                sum += num;
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("숫자가 아닌 것이 입력되었습니다.");
-            }
+            sum += toInt(part);
         }
+        return sum;
+    }
 
-        System.out.println("결과 : " + sum);
-
+    private static int toInt(String part) {
+        try {
+            int num = Integer.parseInt(part); // try 블록 안으로 이동 (외부에 있을 시 문자가 들어오면 에러)
+            if (num < 0) {
+                throw new IllegalArgumentException("음수가 잘못 입력되었습니다.");
+            }
+            return num;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자가 아닌 것이 입력되었습니다.");
+        }
     }
 }
