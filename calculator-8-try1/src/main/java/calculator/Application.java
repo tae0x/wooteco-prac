@@ -18,26 +18,10 @@ public class Application {
         }
 
         String delimiter = getDelimiter(input);
-        
+
         String numbers = getNumberPart(input);
 
-        String[] strings = numbers.split(delimiter);
-        int sum = 0;
-
-        for (String string : strings) {
-
-            try {
-                int num = Integer.parseInt(string);
-
-                if (num < 0) {
-                    throw new IllegalArgumentException("음수는 입력할 수 없습니다");
-                }
-                sum += num;
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("숫자가 아닌 값이 포함되어 있습니다: ");
-            }
-        }
-        return sum;
+        return splitAndSum(numbers, delimiter);
     }
 
     private static String getDelimiter(String input) {
@@ -47,7 +31,6 @@ public class Application {
             int delimiterIndex = input.indexOf("\\n");
             if (delimiterIndex != -1) {
                 String customDelimiter = input.substring(2, delimiterIndex);
-                // split에서 특수문자가 오작동하지 않도록 처리
                 delimiter = Pattern.quote(customDelimiter);
             }
         }
@@ -63,5 +46,27 @@ public class Application {
             }
         }
         return input;
+    }
+
+    private static int splitAndSum(String numbers, String delimiter) {
+        String[] parts = numbers.split(delimiter);
+        int sum = 0;
+
+        for (String part : parts) {
+            if (part.trim().isEmpty()) {
+                continue;
+            }
+
+            try {
+                int num = Integer.parseInt(part);
+                if (num < 0) {
+                    throw new IllegalArgumentException("음수는 입력할 수 없습니다");
+                }
+                sum += num;
+            } catch (NumberFormatException e) {
+                throw new IllegalArgumentException("숫자가 아닌 값이 포함되어 있습니다");
+            }
+        }
+        return sum;
     }
 }
