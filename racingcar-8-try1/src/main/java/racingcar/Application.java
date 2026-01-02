@@ -11,33 +11,19 @@ public class Application {
 
         int[] positions = new int[names.length];
 
-        System.out.println("\n실행 결과");
-        for (int i = 0; i < tryCount; i++) {
-            for (int j = 0; j < names.length; j++) {
-                int randomValue = Randoms.pickNumberInRange(0, 9);
-                if (randomValue >= 4) {
-                    positions[j]++;
-                }
-                System.out.print(names[j] + " : ");
-                for (int k = 0; k < positions[j]; k++) {
-                    System.out.print("-");
-                }
-                System.out.println();
-            }
-            System.out.println();
-        }
+        playGame(tryCount, names, positions);
 
-        int maxPostion = 0;
+        int maxPosition = 0;
         for (int position : positions) {
-            if (position > maxPostion) {
-                maxPostion = position;
+            if (position > maxPosition) {
+                maxPosition = position;
             }
         }
 
         StringBuilder winners = new StringBuilder();
 
         for (int i = 0; i < names.length; i++) {
-            if (positions[i] == maxPostion) {
+            if (positions[i] == maxPosition) {
 
                 if (winners.length() > 0) {
                     winners.append(", ");
@@ -46,6 +32,36 @@ public class Application {
             }
         }
         System.out.println("최종 우승자 : " + winners);
+    }
+
+    private static void playGame(int tryCount, String[] names, int[] positions) {
+        System.out.println("\n실행 결과");
+        for (int i = 0; i < tryCount; i++) {
+            playOneRound(names, positions);
+            System.out.println();
+        }
+    }
+
+    private static void playOneRound(String[] names, int[] positions) {
+        for (int j = 0; j < names.length; j++) {
+            moveCar(positions, j);
+            printCarStatus(names[j], positions[j]);
+        }
+    }
+
+    private static void moveCar(int[] positions, int index) {
+        int randomValue = Randoms.pickNumberInRange(0, 9);
+        if (randomValue >= 4) {
+            positions[index]++;
+        }
+    }
+
+    private static void printCarStatus(String name, int position) {
+        System.out.print(name + " : ");
+        for (int k = 0; k < position; k++) {
+            System.out.print("-");
+        }
+        System.out.println();
     }
 
     private static String[] inputCarNames() {
@@ -69,7 +85,7 @@ public class Application {
     private static int inputTryCount() {
         System.out.println("시도할 횟수는 몇 회인가요?");
         String inputCount = Console.readLine();
-        
+
         int tryCount = parseToInt(inputCount);
 
         validateTryCount(tryCount);
