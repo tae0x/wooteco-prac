@@ -29,4 +29,12 @@ public class Car {
     public int getPosition() {
         return position;
     }
+
+    public boolean isSamePosition(int position) {
+        return this.position == position;
+    }
+
+    public int getMaxPostion(int otherPositon) {
+        return Math.max(this.position, otherPositon);
+    }
 }

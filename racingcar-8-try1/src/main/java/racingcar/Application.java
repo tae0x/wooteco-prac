@@ -9,7 +9,6 @@ public class Application {
         String[] names = InputView.readCarNames();
         int tryCount = InputView.readTryCount();
 
-        int[] positions = new int[names.length];
         List<Car> cars = toCars(names);
 
         OutputView.printGameStart();
@@ -27,35 +26,6 @@ public class Application {
         return cars;
     }
 
-
-    private static String findWinner(List<Car> cars) {
-        int maxPosition = findMaxPosition(cars);
-
-        StringBuilder winners = new StringBuilder();
-
-        for (Car car : cars) {
-            if (car.getPosition() == maxPosition) {
-
-                if (winners.length() > 0) {
-                    winners.append(", ");
-                }
-                winners.append(car.getName());
-            }
-        }
-        return winners.toString();
-    }
-
-    private static int findMaxPosition(List<Car> cars) {
-        int maxPosition = 0;
-
-        for (Car car : cars) {
-            if (car.getPosition() > maxPosition) {
-                maxPosition = car.getPosition();
-            }
-        }
-        return maxPosition;
-    }
-
     private static void playGame(int tryCount, List<Car> cars) {
         for (int i = 0; i < tryCount; i++) {
             playOneRound(cars);
@@ -70,4 +40,31 @@ public class Application {
             OutputView.printCarStatus(car.getName(), car.getPosition());
         }
     }
+
+    private static String findWinner(List<Car> cars) {
+        int maxPosition = findMaxPosition(cars);
+
+        StringBuilder winners = new StringBuilder();
+
+        for (Car car : cars) {
+            if (car.isSamePosition(maxPosition)) {
+
+                if (winners.length() > 0) {
+                    winners.append(", ");
+                }
+                winners.append(car.getName());
+            }
+        }
+        return winners.toString();
+    }
+
+    private static int findMaxPosition(List<Car> cars) {
+        int maxPosition = 0;
+
+        for (Car car : cars) {
+            maxPosition = car.getMaxPostion(maxPosition);
+        }
+        return maxPosition;
+    }
+
 }
