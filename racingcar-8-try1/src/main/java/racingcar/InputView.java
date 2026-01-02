@@ -8,17 +8,7 @@ public class InputView {
         String inputNames = Console.readLine();
         String[] names = inputNames.split(",");
 
-        validateNames(names);
-
         return names;
-    }
-
-    private static void validateNames(String[] names) {
-        for (String name : names) {
-            if (name.length() > 5) {
-                throw new IllegalArgumentException("이름은 5자 이하만 가능합니다.");
-            }
-        }
     }
 
     public static int readTryCount() {

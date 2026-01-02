@@ -1,6 +1,8 @@
 package racingcar;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
@@ -8,59 +10,64 @@ public class Application {
         int tryCount = InputView.readTryCount();
 
         int[] positions = new int[names.length];
+        List<Car> cars = toCars(names);
 
         OutputView.printGameStart();
-        playGame(tryCount, names, positions);
+        playGame(tryCount, cars);
 
-        String winners = findWinner(names, positions);
+        String winners = findWinner(cars);
         OutputView.printWinner(winners);
     }
 
-    private static String findWinner(String[] names, int[] positions) {
-        int maxPosition = findMaxPosition(positions);
+    private static List<Car> toCars(String[] names) {
+        List<Car> cars = new ArrayList<>();
+        for (String name : names) {
+            cars.add(new Car(name));
+        }
+        return cars;
+    }
+
+
+    private static String findWinner(List<Car> cars) {
+        int maxPosition = findMaxPosition(cars);
 
         StringBuilder winners = new StringBuilder();
 
-        for (int i = 0; i < names.length; i++) {
-            if (positions[i] == maxPosition) {
+        for (Car car : cars) {
+            if (car.getPosition() == maxPosition) {
 
                 if (winners.length() > 0) {
                     winners.append(", ");
                 }
-                winners.append(names[i]);
+                winners.append(car.getName());
             }
         }
         return winners.toString();
     }
 
-    private static int findMaxPosition(int[] positions) {
+    private static int findMaxPosition(List<Car> cars) {
         int maxPosition = 0;
-        for (int position : positions) {
-            if (position > maxPosition) {
-                maxPosition = position;
+
+        for (Car car : cars) {
+            if (car.getPosition() > maxPosition) {
+                maxPosition = car.getPosition();
             }
         }
         return maxPosition;
     }
 
-    private static void playGame(int tryCount, String[] names, int[] positions) {
+    private static void playGame(int tryCount, List<Car> cars) {
         for (int i = 0; i < tryCount; i++) {
-            playOneRound(names, positions);
+            playOneRound(cars);
             OutputView.printLine();
         }
     }
 
-    private static void playOneRound(String[] names, int[] positions) {
-        for (int j = 0; j < names.length; j++) {
-            moveCar(positions, j);
-            OutputView.printCarStatus(names[j], positions[j]);
-        }
-    }
-
-    private static void moveCar(int[] positions, int index) {
-        int randomValue = Randoms.pickNumberInRange(0, 9);
-        if (randomValue >= 4) {
-            positions[index]++;
+    private static void playOneRound(List<Car> cars) {
+        for (Car car : cars) {
+            int randomValue = Randoms.pickNumberInRange(0, 9);
+            car.move(randomValue);
+            OutputView.printCarStatus(car.getName(), car.getPosition());
         }
     }
 }
