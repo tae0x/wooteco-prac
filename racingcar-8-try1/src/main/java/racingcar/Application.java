@@ -13,12 +13,11 @@ public class Application {
 
         playGame(tryCount, names, positions);
 
-        int maxPosition = 0;
-        for (int position : positions) {
-            if (position > maxPosition) {
-                maxPosition = position;
-            }
-        }
+        printWinner(names, positions);
+    }
+
+    private static void printWinner(String[] names, int[] positions) {
+        int maxPosition = findMaxPosition(positions);
 
         StringBuilder winners = new StringBuilder();
 
@@ -32,6 +31,16 @@ public class Application {
             }
         }
         System.out.println("최종 우승자 : " + winners);
+    }
+
+    private static int findMaxPosition(int[] positions) {
+        int maxPosition = 0;
+        for (int position : positions) {
+            if (position > maxPosition) {
+                maxPosition = position;
+            }
+        }
+        return maxPosition;
     }
 
     private static void playGame(int tryCount, String[] names, int[] positions) {
