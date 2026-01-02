@@ -1,6 +1,5 @@
 package racingcar;
 
-import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,12 +8,12 @@ public class Application {
         String[] names = InputView.readCarNames();
         int tryCount = InputView.readTryCount();
 
-        List<Car> cars = toCars(names);
+        Cars cars = new Cars(toCars(names));
 
         OutputView.printGameStart();
         playGame(tryCount, cars);
 
-        String winners = findWinner(cars);
+        String winners = cars.findWinnerName();
         OutputView.printWinner(winners);
     }
 
@@ -26,45 +25,18 @@ public class Application {
         return cars;
     }
 
-    private static void playGame(int tryCount, List<Car> cars) {
+    private static void playGame(int tryCount, Cars cars) {
         for (int i = 0; i < tryCount; i++) {
-            playOneRound(cars);
+            cars.moveAll();
+            printStatus(cars);
             OutputView.printLine();
         }
     }
 
-    private static void playOneRound(List<Car> cars) {
-        for (Car car : cars) {
-            int randomValue = Randoms.pickNumberInRange(0, 9);
-            car.move(randomValue);
+    private static void printStatus(Cars cars) {
+        for (Car car : cars.getCars()) {
             OutputView.printCarStatus(car.getName(), car.getPosition());
         }
-    }
-
-    private static String findWinner(List<Car> cars) {
-        int maxPosition = findMaxPosition(cars);
-
-        StringBuilder winners = new StringBuilder();
-
-        for (Car car : cars) {
-            if (car.isSamePosition(maxPosition)) {
-
-                if (winners.length() > 0) {
-                    winners.append(", ");
-                }
-                winners.append(car.getName());
-            }
-        }
-        return winners.toString();
-    }
-
-    private static int findMaxPosition(List<Car> cars) {
-        int maxPosition = 0;
-
-        for (Car car : cars) {
-            maxPosition = car.getMaxPostion(maxPosition);
-        }
-        return maxPosition;
     }
 
 }
