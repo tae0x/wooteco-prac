@@ -1,54 +1,47 @@
 package racingcar;
 
 import camp.nextstep.edu.missionutils.Randoms;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Application {
     public static void main(String[] args) {
         String[] carNames = InputView.readCarNames();
-
         int tryCount = InputView.readTryCount();
 
-        int[] carPositions = new int[carNames.length];
+        List<Car> cars = new ArrayList<>();
+        for (String carName : carNames) {
+            cars.add(new Car(carName));
+        }
 
         OutputView.printGameStart();
 
         for (int i = 0; i < tryCount; i++) {
-            for (int j = 0; j < carNames.length; j++) {
-
+            for (Car car : cars) {
                 int randomValue = Randoms.pickNumberInRange(0, 9);
+                car.move(randomValue);
 
-                if (randomValue >= 4) {
-                    carPositions[j]++;
-                }
-
-                OutputView.printCarStatus(carNames[j], carPositions[j]);
+                OutputView.printCarStatus(car.getName(), car.getPosition());
             }
-
             System.out.println();
         }
 
         int maxPosition = 0;
-        for (int carPosition : carPositions) {
-            if (carPosition > maxPosition) {
-                maxPosition = carPosition;
-            }
+
+        for (Car car : cars) {
+            maxPosition = car.findMaxPosition(maxPosition);
         }
 
         StringBuilder winners = new StringBuilder();
 
-        for (int i = 0; i < carNames.length; i++) {
-            if (carPositions[i] == maxPosition) {
-
+        for (Car car : cars) {
+            if (car.isSamePosition(maxPosition)) {
                 if (winners.length() > 0) {
                     winners.append(", ");
                 }
-
-                winners.append(carNames[i]);
+                winners.append(car.getName());
             }
+            OutputView.printWinner(winners);
         }
-
-        OutputView.printWinner(winners);
     }
-
-
 }
