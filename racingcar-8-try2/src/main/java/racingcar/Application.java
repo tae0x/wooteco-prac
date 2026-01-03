@@ -10,7 +10,8 @@ public class Application {
 
         int[] carPositions = new int[carNames.length];
 
-        System.out.println("\n실행 결과");
+        OutputView.printGameStart();
+
         for (int i = 0; i < tryCount; i++) {
             for (int j = 0; j < carNames.length; j++) {
 
@@ -20,12 +21,9 @@ public class Application {
                     carPositions[j]++;
                 }
 
-                System.out.print(carNames[j] + " : ");
-                for (int k = 0; k < carPositions[j]; k++) {
-                    System.out.print("-");
-                }
-                System.out.println();
+                OutputView.printCarStatus(carNames[j], carPositions[j]);
             }
+
             System.out.println();
         }
 
@@ -42,14 +40,14 @@ public class Application {
             if (carPositions[i] == maxPosition) {
 
                 if (winners.length() > 0) {
-                    winners.append(" ,");
+                    winners.append(", ");
                 }
 
                 winners.append(carNames[i]);
             }
         }
 
-        System.out.println("최종 우승자 : " + winners);
+        OutputView.printWinner(winners);
     }
 
 
