@@ -5,7 +5,7 @@ public class OutputView {
         System.out.println("\n실행 결과");
     }
 
-    public static void printWinner(StringBuilder winners) {
+    public static void printWinner(String winners) {
         System.out.println("최종 우승자 : " + winners);
     }
 
