@@ -1,15 +1,21 @@
 package racingcar;
 
 public class Car {
+    private static final int MAX_NAME_LENGTH = 5;
+    private static final int MOVING_THRESHOLD = 4;
+
     private final String name;
     private int position = 0;
 
     public Car(String name) {
+        if (name.length() > MAX_NAME_LENGTH) {
+            throw new IllegalArgumentException("이름은 " + MAX_NAME_LENGTH + "자 이하만 가능합니다.");
+        }
         this.name = name;
     }
 
     public void move(int number) {
-        if (number >= 4) {
+        if (number >= MOVING_THRESHOLD) {
             this.position++;
         }
     }
