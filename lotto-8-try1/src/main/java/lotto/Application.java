@@ -4,7 +4,9 @@ import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -18,7 +20,7 @@ public class Application {
         List<List<Integer>> lottos = new ArrayList<>();
 
         for (int i = 0; i < count; i++) {
-            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1,45, 6);
+            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
             Collections.sort(numbers);
 
             System.out.println(numbers);
@@ -38,14 +40,10 @@ public class Application {
         String inputBonusNumber = Console.readLine();
         int bonusNumber = Integer.parseInt(inputBonusNumber);
 
-        System.out.println("\n당첨 통계");
-        System.out.println("---");
-
-        int match3 = 0;
-        int match4 = 0;
-        int match5 = 0;
-        int match5Bonus = 0;
-        int match6 = 0;
+        Map<Rank, Integer> result = new HashMap<>();
+        for (Rank rank : Rank.values()) {
+            result.put(rank, 0);
+        }
 
         for (List<Integer> lotto : lottos) {
             int matchCount = 0;
@@ -56,27 +54,19 @@ public class Application {
             }
 
             boolean matchBonus = lotto.contains(bonusNumber);
+            Rank rank = Rank.valueOf(matchCount, matchBonus);
+            result.put(rank, result.get(rank) + 1);
 
-            if (matchCount == 6) {
-                match6++;
-            } else if (matchCount == 5) {
-                if (matchBonus) {
-                    match5Bonus++;
-                } else {
-                    match5++;
-                }
-            } else if (matchCount == 4) {
-                match4++;
-            } else if (matchCount == 3) {
-                match3++;
-            }
         }
 
-        System.out.println("3개 일치 (5,000원) - " + match3 + "개");
-        System.out.println("4개 일치 (50,000원) - " + match4 + "개");
-        System.out.println("5개 일치 (1,500,000원) - " + match5 + "개");
-        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + match5Bonus + "개");
-        System.out.println("6개 일치 (2,000,000,000원) - " + match6 + "개");
+        System.out.println("\n당첨 통계");
+        System.out.println("---");
+
+        System.out.println("3개 일치 (5,000원) - " + result.get(Rank.FIFTH) + "개");
+        System.out.println("4개 일치 (50,000원) - " + result.get(Rank.FOURTH) + "개");
+        System.out.println("5개 일치 (1,500,000원) - " + result.get(Rank.THIRD) + "개");
+        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + result.get(Rank.SECOND) + "개");
+        System.out.println("6개 일치 (2,000,000,000원) - " + result.get(Rank.FIRST) + "개");
 
     }
 }
