@@ -15,5 +15,15 @@ public class Application {
         int amount = Integer.parseInt(input);
         int count = amount / 1000;
         System.out.println("\n" + count + "개를 구매했습니다.");
+
+        List<List<Integer>> lottos = new ArrayList<>();
+
+        for (int i = 0; i < count; i++) {
+            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1,45, count);
+
+            Collections.sort(numbers);
+
+            System.out.println(numbers);
+        }
     }
 }
