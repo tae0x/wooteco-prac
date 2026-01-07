@@ -38,5 +38,45 @@ public class Application {
         String inputBonusNumber = Console.readLine();
         int bonusNumber = Integer.parseInt(inputBonusNumber);
 
+        System.out.println("\n당첨 통계");
+        System.out.println("---");
+
+        int match3 = 0;
+        int match4 = 0;
+        int match5 = 0;
+        int match5Bonus = 0;
+        int match6 = 0;
+
+        for (List<Integer> lotto : lottos) {
+            int matchCount = 0;
+            for (Integer number : lotto) {
+                if (correctNumbers.contains(number)) {
+                    matchCount++;
+                }
+            }
+
+            boolean matchBonus = lotto.contains(bonusNumber);
+
+            if (matchCount == 6) {
+                match6++;
+            } else if (matchCount == 5) {
+                if (matchBonus) {
+                    match5Bonus++;
+                } else {
+                    match5++;
+                }
+            } else if (matchCount == 4) {
+                match4++;
+            } else if (matchCount == 3) {
+                match3++;
+            }
+        }
+
+        System.out.println("3개 일치 (5,000원) - " + match3 + "개");
+        System.out.println("4개 일치 (50,000원) - " + match4 + "개");
+        System.out.println("5개 일치 (1,500,000원) - " + match5 + "개");
+        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + match5Bonus + "개");
+        System.out.println("6개 일치 (2,000,000,000원) - " + match6 + "개");
+
     }
 }
