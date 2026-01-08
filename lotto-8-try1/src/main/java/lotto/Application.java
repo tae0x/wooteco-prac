@@ -14,15 +14,15 @@ public class Application {
         System.out.println("구입 금액을 입력해 주세요.");
         String inputMoney = Console.readLine();
 
-        int count = Integer.parseInt(inputMoney) / 1000;
-        System.out.println("\n" + count + "개를 구매했습니다.");
+        int buyCount = Integer.parseInt(inputMoney) / 1000;
+        System.out.println("\n" + buyCount + "개를 구매했습니다.");
 
         List<List<Integer>> lottos = new ArrayList<>();
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < buyCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
+            List<Integer> sortedNumbers = new ArrayList<>(numbers);
             Collections.sort(numbers);
-
             System.out.println(numbers);
             lottos.add(numbers);
         }
@@ -36,7 +36,7 @@ public class Application {
             correctNumbers.add(Integer.parseInt(s.trim()));
         }
 
-        System.out.println("보너스 번호를 입력해주세요.");
+        System.out.println("\n보너스 번호를 입력해주세요.");
         String inputBonusNumber = Console.readLine();
         int bonusNumber = Integer.parseInt(inputBonusNumber);
 
@@ -56,7 +56,6 @@ public class Application {
             boolean matchBonus = lotto.contains(bonusNumber);
             Rank rank = Rank.valueOf(matchCount, matchBonus);
             result.put(rank, result.get(rank) + 1);
-
         }
 
         System.out.println("\n당첨 통계");
@@ -68,5 +67,14 @@ public class Application {
         System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + result.get(Rank.SECOND) + "개");
         System.out.println("6개 일치 (2,000,000,000원) - " + result.get(Rank.FIRST) + "개");
 
+        double totalEarnings = 0;
+        for (Rank rank : result.keySet()) {
+            Integer count = result.get(rank);
+
+            totalEarnings += rank.getWinningMoney() * count;
+        }
+        double profitRate = (totalEarnings / Integer.parseInt(inputMoney)) * 100;
+
+        System.out.printf("총 수익률은 %.1f%%입니다.\n", profitRate);
     }
 }
