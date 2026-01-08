@@ -11,12 +11,13 @@ public class Application {
             int sum = calculateSum(input);
 
             // 합계 출력
-            System.out.println("결과 : " + sum);
+            OutputView.printResult(sum);
 
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("숫자를 입력하세요.");
         }
     }
+
 
     private static int calculateSum(String input) {
 
