@@ -22,9 +22,10 @@ public class Application {
         for (int i = 0; i < buyCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
             List<Integer> sortedNumbers = new ArrayList<>(numbers);
-            Collections.sort(numbers);
-            System.out.println(numbers);
-            lottos.add(numbers);
+            Collections.sort(sortedNumbers);
+
+            System.out.println(sortedNumbers);
+            lottos.add(sortedNumbers);
         }
 
         System.out.println("\n당첨 번호를 입력해 주세요.");
