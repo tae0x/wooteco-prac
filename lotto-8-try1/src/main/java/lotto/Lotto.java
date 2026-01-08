@@ -27,7 +27,7 @@ public class Lotto {
         return numbers;
     }
 
-    public int countMatch(Lotto lotto, List<Integer> correctNumbers) {
+    public int countMatch(List<Integer> correctNumbers) {
         int matchCount = 0;
         for (Integer number : numbers) {
             if (correctNumbers.contains(number)) {
@@ -38,7 +38,7 @@ public class Lotto {
     }
 
 
-    public boolean contains(Lotto lotto, int bonusNumber) {
+    public boolean contains(int bonusNumber) {
         return numbers.contains(bonusNumber);
     }
 }

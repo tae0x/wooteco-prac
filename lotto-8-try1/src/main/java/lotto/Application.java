@@ -1,6 +1,5 @@
 package lotto;
 
-import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,23 +10,7 @@ import java.util.Map;
 public class Application {
     public static void main(String[] args) {
 
-        int amount = 0;
-        while (true) {
-            try {
-                System.out.println("구입 금액을 입력해 주세요.");
-                String inputMoney = Console.readLine();
-                amount = Integer.parseInt(inputMoney);
-
-                if (amount % 1000 != 0) {
-                    throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다.");
-                }
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+        int amount = InputView.inputPurchaseAmount();
 
         int lottoCount = amount / 1000;
         System.out.println("\n" + lottoCount + "개를 구매했습니다.");
@@ -46,18 +29,9 @@ public class Application {
             lottos.add(lotto);
         }
 
-        System.out.println("\n당첨 번호를 입력해 주세요.");
-        String inputCorrectNumber = Console.readLine();
-        String[] split = inputCorrectNumber.split(",");
-        List<Integer> correctNumbers = new ArrayList<>();
+        List<Integer> correctNumbers = InputView.inputWinningNumbers();
 
-        for (String s : split) {
-            correctNumbers.add(Integer.parseInt(s.trim()));
-        }
-
-        System.out.println("\n보너스 번호를 입력해주세요.");
-        String inputBonusNumber = Console.readLine();
-        int bonusNumber = Integer.parseInt(inputBonusNumber);
+        int bonusNumber = InputView.inputBonusNumber(correctNumbers);
 
         Map<Rank, Integer> result = new HashMap<>();
         for (Rank rank : Rank.values()) {
@@ -65,9 +39,9 @@ public class Application {
         }
 
         for (Lotto lotto : lottos) {
-            int matchCount = lotto.countMatch(lotto, correctNumbers);
+            int matchCount = lotto.countMatch(correctNumbers);
 
-            boolean matchBonus = lotto.contains(lotto, bonusNumber);
+            boolean matchBonus = lotto.contains(bonusNumber);
 
             Rank rank = Rank.valueOf(matchCount, matchBonus);
             result.put(rank, result.get(rank) + 1);
