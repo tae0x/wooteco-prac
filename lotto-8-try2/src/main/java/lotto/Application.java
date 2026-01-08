@@ -84,9 +84,36 @@ public class Application {
         }
 
         // 4. 보너스 번호 입력
+        int bonusNumber;
+
+        while (true) {
+            try {
+                System.out.println("\n보너스 번호를 입력해 주세요.");
+                String input = Console.readLine();
+
+                bonusNumber = Integer.parseInt(input);
+                if (bonusNumber < 1 || bonusNumber > 45) {
+                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 1 ~ 45 사이여야합니다.");
+                }
+
+                if (winningLotto.contains(bonusNumber)) {
+                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+                }
+
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+
+
+        }
 
         // 5. 당첨 확인 및 통계
 
         // 6. 결과 출력
     }
+
+
 }
