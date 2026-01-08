@@ -42,11 +42,13 @@ public class Application {
 
         for (int i = 0; i < lottoCount; i++) {
 
-            List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
+            List<Integer> immutableNumber = Randoms.pickUniqueNumbersInRange(1, 45, 6);
 
-            Collections.sort(numbers);
+            List<Integer> mutableNumber = new ArrayList<>(immutableNumber);
 
-            Lotto lotto = new Lotto(numbers);
+            Collections.sort(mutableNumber);
+
+            Lotto lotto = new Lotto(mutableNumber);
 
             lottos.add(lotto);
 
@@ -140,11 +142,10 @@ public class Application {
 
         int totalPrize = 0;
         for (Rank rank : result.keySet()) {
-            totalPrize = rank.getPrize() * result.get(rank);
+            totalPrize += rank.getPrize() * result.get(rank);
         }
 
         double profitRate = (double) totalPrize / (lottoCount * 1000) * 100;
         System.out.printf("총 수익률은 %.1f%%입니다.", profitRate);
-
     }
 }
