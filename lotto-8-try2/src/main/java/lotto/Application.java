@@ -12,50 +12,90 @@ public class Application {
     public static void main(String[] args) {
 
         // 1. 구입 금액 입력
-        int lottoCount = 0;
+        int lottoCount = readPurchaseAmount();
+
+        // 2. 로또 발행
+        List<Lotto> lottos = issueLottos(lottoCount);
+
+        // 3. 당첨 번호 입력
+        Lotto winningLotto = readWinningNumber();
+
+        // 4. 보너스 번호 입력
+        int bonusNumber = readBonusNumber(winningLotto);
+
+        // 5. 당첨 확인 및 통계
+        Map<Rank, Integer> result = checkWinning(lottos, winningLotto, bonusNumber);
+
+        // 6. 결과 출력
+        printResult(result, lottoCount);
+    }
+
+    private static void printResult(Map<Rank, Integer> result, int lottoCount) {
+        System.out.println("\n당첨 통계");
+        System.out.println("---");
+        System.out.println("3개 일치 (5,000원) - " + result.get(Rank.FIFTH) + "개");
+        System.out.println("4개 일치 (50,000원) - " + result.get(Rank.FOURTH) + "개");
+        System.out.println("5개 일치 (1,500,000원) - " + result.get(Rank.THIRD) + "개");
+        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + result.get(Rank.SECOND) + "개");
+        System.out.println("6개 일치 (2,000,000,000원) - " + result.get(Rank.FIRST) + "개");
+
+        int totalPrize = 0;
+        for (Rank rank : result.keySet()) {
+            totalPrize += rank.getPrize() * result.get(rank);
+        }
+
+        double profitRate = (double) totalPrize / (lottoCount * 1000) * 100;
+        System.out.printf("총 수익률은 %.1f%%입니다.", profitRate);
+    }
+
+    private static Map<Rank, Integer> checkWinning(List<Lotto> lottos, Lotto winningLotto, int bonusNumber) {
+        Map<Rank, Integer> result = new HashMap<>();
+        for (Rank rank : Rank.values()) {
+            result.put(rank, 0);
+        }
+
+        // 각 로또 마다 반복
+        for (Lotto lotto : lottos) {
+            // 당첨 번호와 일치 개수 확인
+            int matchCount = lotto.countMatch(winningLotto);
+            // 보너스 번호 포함 여부 확인
+            boolean bonusMatch = lotto.contains(bonusNumber);
+            // 등수 판정
+            Rank rank = Rank.valueOf(matchCount, bonusMatch);
+            // 등수별 개수 카운트
+            result.put(rank, result.get(rank) + 1);
+        }
+        return result;
+    }
+
+    private static int readBonusNumber(Lotto winningLotto) {
+        int bonusNumber;
 
         while (true) {
-            System.out.println("구입금액을 입력해 주세요.");
             try {
+                System.out.println("\n보너스 번호를 입력해 주세요.");
                 String input = Console.readLine();
-                int purchaseAmount = Integer.parseInt(input);
 
-                if (purchaseAmount <= 0 || purchaseAmount % 1000 != 0) {
-                    throw new IllegalArgumentException("[ERROR] 구입금액은 1,000원 단위여야 합니다.");
+                bonusNumber = Integer.parseInt(input);
+                if (bonusNumber < 1 || bonusNumber > 45) {
+                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 1 ~ 45 사이여야합니다.");
                 }
 
-                lottoCount = purchaseAmount / 1000;
-                break;
+                if (winningLotto.contains(bonusNumber)) {
+                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+                }
 
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
-
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
+        return bonusNumber;
+    }
 
-        // 2. 로또 발행
-        System.out.println("\n" + lottoCount + "개를 구매했습니다.");
-
-        List<Lotto> lottos = new ArrayList<>();
-
-        for (int i = 0; i < lottoCount; i++) {
-
-            List<Integer> immutableNumber = Randoms.pickUniqueNumbersInRange(1, 45, 6);
-
-            List<Integer> mutableNumber = new ArrayList<>(immutableNumber);
-
-            Collections.sort(mutableNumber);
-
-            Lotto lotto = new Lotto(mutableNumber);
-
-            lottos.add(lotto);
-
-            System.out.println(lotto);
-        }
-
-        // 3. 당첨 번호 입력
+    private static Lotto readWinningNumber() {
         Lotto winningLotto = null;
 
         while (true) {
@@ -86,66 +126,54 @@ public class Application {
                 System.out.println(e.getMessage());
             }
         }
+        return winningLotto;
+    }
 
-        // 4. 보너스 번호 입력
-        int bonusNumber;
+    private static List<Lotto> issueLottos(int lottoCount) {
+        System.out.println("\n" + lottoCount + "개를 구매했습니다.");
+
+        List<Lotto> lottos = new ArrayList<>();
+
+        for (int i = 0; i < lottoCount; i++) {
+
+            List<Integer> immutableNumber = Randoms.pickUniqueNumbersInRange(1, 45, 6);
+
+            List<Integer> mutableNumber = new ArrayList<>(immutableNumber);
+
+            Collections.sort(mutableNumber);
+
+            Lotto lotto = new Lotto(mutableNumber);
+
+            lottos.add(lotto);
+
+            System.out.println(lotto);
+        }
+        return lottos;
+    }
+
+    private static int readPurchaseAmount() {
+        int lottoCount = 0;
 
         while (true) {
+            System.out.println("구입금액을 입력해 주세요.");
             try {
-                System.out.println("\n보너스 번호를 입력해 주세요.");
                 String input = Console.readLine();
+                int purchaseAmount = Integer.parseInt(input);
 
-                bonusNumber = Integer.parseInt(input);
-                if (bonusNumber < 1 || bonusNumber > 45) {
-                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 1 ~ 45 사이여야합니다.");
+                if (purchaseAmount <= 0 || purchaseAmount % 1000 != 0) {
+                    throw new IllegalArgumentException("[ERROR] 구입금액은 1,000원 단위여야 합니다.");
                 }
 
-                if (winningLotto.contains(bonusNumber)) {
-                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-                }
-
+                lottoCount = purchaseAmount / 1000;
                 break;
+
             } catch (NumberFormatException e) {
                 System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
+
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
-
-        // 5. 당첨 확인 및 통계
-
-        Map<Rank, Integer> result = new HashMap<>();
-        for (Rank rank : Rank.values()) {
-            result.put(rank, 0);
-        }
-
-        // 각 로또 마다 반복
-        for (Lotto lotto : lottos) {
-            // 당첨 번호와 일치 개수 확인
-            int matchCount = lotto.countMatch(winningLotto);
-            // 보너스 번호 포함 여부 확인
-            boolean bonusMatch = lotto.contains(bonusNumber);
-            // 등수 판정
-            Rank rank = Rank.valueOf(matchCount, bonusMatch);
-            // 등수별 개수 카운트
-            result.put(rank, result.get(rank) + 1);
-        }
-
-        // 6. 결과 출력
-        System.out.println("\n당첨 통계");
-        System.out.println("---");
-        System.out.println("3개 일치 (5,000원) - " + result.get(Rank.FIFTH) + "개");
-        System.out.println("4개 일치 (50,000원) - " + result.get(Rank.FOURTH) + "개");
-        System.out.println("5개 일치 (1,500,000원) - " + result.get(Rank.THIRD) + "개");
-        System.out.println("5개 일치, 보너스 볼 일치 (30,000,000원) - " + result.get(Rank.SECOND) + "개");
-        System.out.println("6개 일치 (2,000,000,000원) - " + result.get(Rank.FIRST) + "개");
-
-        int totalPrize = 0;
-        for (Rank rank : result.keySet()) {
-            totalPrize += rank.getPrize() * result.get(rank);
-        }
-
-        double profitRate = (double) totalPrize / (lottoCount * 1000) * 100;
-        System.out.printf("총 수익률은 %.1f%%입니다.", profitRate);
+        return lottoCount;
     }
 }
