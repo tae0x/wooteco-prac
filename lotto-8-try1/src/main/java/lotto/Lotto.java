@@ -27,10 +27,10 @@ public class Lotto {
         return numbers;
     }
 
-    public int countMatch(List<Integer> correctNumbers) {
+    public int countMatch(List<Integer> otherNumbers) {
         int matchCount = 0;
         for (Integer number : numbers) {
-            if (correctNumbers.contains(number)) {
+            if (otherNumbers.contains(number)) {
                 matchCount++;
             }
         }
@@ -38,7 +38,7 @@ public class Lotto {
     }
 
 
-    public boolean contains(int bonusNumber) {
-        return numbers.contains(bonusNumber);
+    public boolean contains(int number) {
+        return numbers.contains(number);
     }
 }

@@ -13,9 +13,11 @@ public class OutputView {
         }
     }
 
-    public static void printWinningStatistics(Map<Rank, Integer> result, double profitRate) {
+    public static void printWinningStatistics(LottoResult lottoResult, double profitRate) {
         System.out.println("\n당첨 통계");
         System.out.println("---");
+
+        Map<Rank, Integer> result = lottoResult.getResult();
 
         System.out.println("3개 일치 (5,000원) - " + result.get(Rank.FIFTH) + "개");
         System.out.println("4개 일치 (50,000원) - " + result.get(Rank.FOURTH) + "개");
