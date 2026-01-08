@@ -14,6 +14,15 @@ public class Application {
         System.out.println("구입 금액을 입력해 주세요.");
         String inputMoney = Console.readLine();
 
+        try {
+            int amount = Integer.parseInt(inputMoney);
+            if (amount % 1000 != 0) {
+                throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다");
+            }
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("[ERROR] 구입 금액은 숫자만 가능합니다.");
+        }
+
         int buyCount = Integer.parseInt(inputMoney) / 1000;
         System.out.println("\n" + buyCount + "개를 구매했습니다.");
 
