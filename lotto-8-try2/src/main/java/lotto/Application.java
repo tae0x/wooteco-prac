@@ -4,7 +4,9 @@ import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -111,6 +113,24 @@ public class Application {
         }
 
         // 5. 당첨 확인 및 통계
+
+        Map<Rank, Integer> result = new HashMap<>();
+        for (Rank rank : Rank.values()) {
+            result.put(rank, 0);
+        }
+
+        // 각 로또 마다 반복
+        for (Lotto lotto : lottos) {
+            // 당첨 번호와 일치 개수 확인
+            int matchCount = lotto.countMatch(winningLotto);
+            // 보너스 번호 포함 여부 확인
+            boolean bonusMatch = lotto.contains(bonusNumber);
+            // 등수 판정
+            Rank rank = Rank.valueOf(matchCount, bonusMatch);
+            // 등수별 개수 카운트
+            result.put(rank, result.get(rank) + 1);
+        }
+        // 총 상금 계산
 
         // 6. 결과 출력
     }

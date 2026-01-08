@@ -29,6 +29,16 @@ public class Lotto {
         return numbers.contains(number);
     }
 
+    public int countMatch(Lotto other) {
+        int count = 0;
+        for (Integer number : numbers) {
+            if (other.numbers.contains(number)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     @Override
     public String toString() {
         return numbers.toString();
