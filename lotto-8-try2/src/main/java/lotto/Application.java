@@ -1,6 +1,5 @@
 package lotto;
 
-import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,16 +11,16 @@ public class Application {
     public static void main(String[] args) {
 
         // 1. 구입 금액 입력
-        int lottoCount = readPurchaseAmount();
+        int lottoCount = InputView.readPurchaseAmount();
 
         // 2. 로또 발행
         List<Lotto> lottos = issueLottos(lottoCount);
 
         // 3. 당첨 번호 입력
-        Lotto winningLotto = readWinningNumber();
+        Lotto winningLotto = InputView.readWinningNumber();
 
         // 4. 보너스 번호 입력
-        int bonusNumber = readBonusNumber(winningLotto);
+        int bonusNumber = InputView.readBonusNumber(winningLotto);
 
         // 5. 당첨 확인 및 통계
         Map<Rank, Integer> result = checkWinning(lottos, winningLotto, bonusNumber);
@@ -68,66 +67,6 @@ public class Application {
         return result;
     }
 
-    private static int readBonusNumber(Lotto winningLotto) {
-        int bonusNumber;
-
-        while (true) {
-            try {
-                System.out.println("\n보너스 번호를 입력해 주세요.");
-                String input = Console.readLine();
-
-                bonusNumber = Integer.parseInt(input);
-                if (bonusNumber < 1 || bonusNumber > 45) {
-                    throw new IllegalArgumentException("[ERROR] 당첨 번호는 1 ~ 45 사이여야합니다.");
-                }
-
-                if (winningLotto.contains(bonusNumber)) {
-                    throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-                }
-
-                break;
-            } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return bonusNumber;
-    }
-
-    private static Lotto readWinningNumber() {
-        Lotto winningLotto = null;
-
-        while (true) {
-            try {
-                System.out.println("\n당첨 번호를 입력해주세요.");
-                String input = Console.readLine();
-                String[] tokens = input.split(",");
-
-                List<Integer> winningNumbers = new ArrayList<>();
-
-                for (String token : tokens) {
-
-                    int winningNumber = Integer.parseInt(token.trim());
-
-                    if (winningNumber < 1 || winningNumber > 45) {
-                        throw new IllegalArgumentException("[ERROR] 당첨 번호는 1 ~ 45 사이여야합니다.");
-                    }
-
-                    winningNumbers.add(winningNumber);
-                }
-
-                winningLotto = new Lotto(winningNumbers);
-                break;
-
-            } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 당첨 번호는 숫자여야 합니다.");
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return winningLotto;
-    }
 
     private static List<Lotto> issueLottos(int lottoCount) {
         System.out.println("\n" + lottoCount + "개를 구매했습니다.");
@@ -151,29 +90,4 @@ public class Application {
         return lottos;
     }
 
-    private static int readPurchaseAmount() {
-        int lottoCount = 0;
-
-        while (true) {
-            System.out.println("구입금액을 입력해 주세요.");
-            try {
-                String input = Console.readLine();
-                int purchaseAmount = Integer.parseInt(input);
-
-                if (purchaseAmount <= 0 || purchaseAmount % 1000 != 0) {
-                    throw new IllegalArgumentException("[ERROR] 구입금액은 1,000원 단위여야 합니다.");
-                }
-
-                lottoCount = purchaseAmount / 1000;
-                break;
-
-            } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
-
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return lottoCount;
-    }
 }
