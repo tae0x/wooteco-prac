@@ -23,10 +23,10 @@ public class InputView {
                 break;
 
             } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
+                OutputView.printError("[ERROR] 구입 금액은 숫자만 가능합니다.");
 
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                OutputView.printError(e.getMessage());
             }
         }
         return lottoCount;
@@ -58,9 +58,9 @@ public class InputView {
                 break;
 
             } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 당첨 번호는 숫자여야 합니다.");
+                OutputView.printError("[ERROR] 당첨 번호는 숫자여야 합니다.");
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                OutputView.printError(e.getMessage());
             }
         }
         return winningLotto;
@@ -85,9 +85,9 @@ public class InputView {
 
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
+                OutputView.printError("[ERROR] 구입 금액은 숫자만 가능합니다.");
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+                OutputView.printError(e.getMessage());
             }
         }
         return bonusNumber;
