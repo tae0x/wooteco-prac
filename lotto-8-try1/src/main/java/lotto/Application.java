@@ -32,15 +32,18 @@ public class Application {
         int lottoCount = amount / 1000;
         System.out.println("\n" + lottoCount + "개를 구매했습니다.");
 
-        List<List<Integer>> lottos = new ArrayList<>();
+        List<Lotto> lottos = new ArrayList<>();
 
         for (int i = 0; i < lottoCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
             List<Integer> sortedNumbers = new ArrayList<>(numbers);
             Collections.sort(sortedNumbers);
 
-            System.out.println(sortedNumbers);
-            lottos.add(sortedNumbers);
+            Lotto lotto = new Lotto(sortedNumbers);
+
+            System.out.println(lotto.getNumbers());
+
+            lottos.add(lotto);
         }
 
         System.out.println("\n당첨 번호를 입력해 주세요.");
@@ -61,15 +64,11 @@ public class Application {
             result.put(rank, 0);
         }
 
-        for (List<Integer> lotto : lottos) {
-            int matchCount = 0;
-            for (Integer number : lotto) {
-                if (correctNumbers.contains(number)) {
-                    matchCount++;
-                }
-            }
+        for (Lotto lotto : lottos) {
+            int matchCount = lotto.countMatch(lotto, correctNumbers);
 
-            boolean matchBonus = lotto.contains(bonusNumber);
+            boolean matchBonus = lotto.contains(lotto, bonusNumber);
+
             Rank rank = Rank.valueOf(matchCount, matchBonus);
             result.put(rank, result.get(rank) + 1);
         }
