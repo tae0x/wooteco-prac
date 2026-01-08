@@ -11,24 +11,30 @@ import java.util.Map;
 public class Application {
     public static void main(String[] args) {
 
-        System.out.println("구입 금액을 입력해 주세요.");
-        String inputMoney = Console.readLine();
+        int amount = 0;
+        while (true) {
+            try {
+                System.out.println("구입 금액을 입력해 주세요.");
+                String inputMoney = Console.readLine();
+                amount = Integer.parseInt(inputMoney);
 
-        try {
-            int amount = Integer.parseInt(inputMoney);
-            if (amount % 1000 != 0) {
-                throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다");
+                if (amount % 1000 != 0) {
+                    throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다.");
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] 구입 금액은 숫자만 가능합니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 구입 금액은 숫자만 가능합니다.");
         }
 
-        int buyCount = Integer.parseInt(inputMoney) / 1000;
-        System.out.println("\n" + buyCount + "개를 구매했습니다.");
+        int lottoCount = amount / 1000;
+        System.out.println("\n" + lottoCount + "개를 구매했습니다.");
 
         List<List<Integer>> lottos = new ArrayList<>();
 
-        for (int i = 0; i < buyCount; i++) {
+        for (int i = 0; i < lottoCount; i++) {
             List<Integer> numbers = Randoms.pickUniqueNumbersInRange(1, 45, 6);
             List<Integer> sortedNumbers = new ArrayList<>(numbers);
             Collections.sort(sortedNumbers);
@@ -83,7 +89,7 @@ public class Application {
 
             totalEarnings += rank.getWinningMoney() * count;
         }
-        double profitRate = (totalEarnings / Integer.parseInt(inputMoney)) * 100;
+        double profitRate = (totalEarnings / amount) * 100;
 
         System.out.printf("총 수익률은 %.1f%%입니다.\n", profitRate);
     }
