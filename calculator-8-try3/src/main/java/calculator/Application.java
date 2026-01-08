@@ -1,13 +1,11 @@
 package calculator;
 
-import camp.nextstep.edu.missionutils.Console;
-
 public class Application {
     public static void main(String[] args) {
 
         try {
             // 입력 받기
-            String input = readInput();
+            String input = InputView.readInput();
 
             // 계산 하기
             int sum = calculateSum(input);
@@ -41,11 +39,6 @@ public class Application {
         }
     }
 
-    private static String readInput() {
-        System.out.println("덧셈할 문자열을 입력해 주세요.");
-
-        return Console.readLine();
-    }
 
     private static String extractDelimiter(String input) {
         if (input.startsWith("//") && input.contains("\\n")) {
@@ -67,12 +60,16 @@ public class Application {
     private static int sum(String[] tokens) {
         int sum = 0;
         for (String token : tokens) {
-            int number = Integer.parseInt(token);
+            int number = parseInt(token);
             // 음수일시 예외
             validatePositive(number);
 
             sum += number;
         }
         return sum;
+    }
+
+    private static int parseInt(String token) {
+        return Integer.parseInt(token);
     }
 }
