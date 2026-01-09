@@ -48,6 +48,11 @@ public class Application {
         }
 
         // 3. 생성된 동전 출력
+        System.out.println("\n자판기가 보유한 동전");
+        for (Coin coin : Coin.values()) {
+            int count = coinCount.get(coin);
+            System.out.println(coin.getAmount() + "원 - " + count + "개");
+        }
 
         // 4. 상품 정보 입력 (파싱 필요)
 
