@@ -1,6 +1,8 @@
 package christmas;
 
 import camp.nextstep.edu.missionutils.Console;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -96,12 +98,51 @@ public class Application {
         }
 
         // 4. 할인 전 총주문 금액 계산
+        int totalAmount = 0;
+        for (Menu menu : orders.keySet()) {
+            int quantity = orders.get(menu);
+            totalAmount += menu.getPrice() * quantity;
+        }
+
+        // 10,000원 미만이면 이벤트 적용 안 함
+        if (totalAmount < 10000) {
+            // 나중에 이벤트 없이 출력
+        }
 
         // 5. 크리스마스 디데이 할인
+        int christmasDiscount = 0;
+        if (visitDate >= 1 && visitDate <= 25) {
+            christmasDiscount = 1000 + (visitDate - 1) * 100;
+        }
 
         // 6. 평일/주말 할인
+        LocalDate date = LocalDate.of(2023, 12, visitDate);
+        DayOfWeek dayOfWeek = date.getDayOfWeek();
+
+        boolean isWeekend = (dayOfWeek == DayOfWeek.FRIDAY || dayOfWeek == DayOfWeek.SATURDAY);
+
+        int weekdayDiscount = 0;
+        int weekendDiscount = 0;
+
+        for (Menu menu : orders.keySet()) {
+            int quantity = orders.get(menu);
+
+            if (!isWeekend && menu.getCategory().equals("DESSERT")) {
+                // 평일 + 디저트
+                weekdayDiscount += 2023 * quantity;
+            }
+
+            if (isWeekend && menu.getCategory().equals("MAIN")) {
+                // 주말 + 메인
+                weekendDiscount += 2023 * quantity;
+            }
+        }
 
         // 7. 특별 할인
+        int specialDiscount = 0;
+        if (dayOfWeek == DayOfWeek.SUNDAY || visitDate == 25) {
+            specialDiscount = 1000;
+        }
 
         // 8. 증정 이벤트
 
