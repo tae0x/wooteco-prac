@@ -12,7 +12,7 @@ public class Application {
         int moveCount = InputView.readMoveCount();
 
         // 3. 경주 진행
-        List<Car> cars = runCars(carNames, moveCount);
+        List<Car> cars = runGame(carNames, moveCount);
 
         // 4. 우승자 계산
         printWinner(cars);
@@ -32,11 +32,11 @@ public class Application {
                 winningCars.add(car);
             }
         }
-        
+
         OutputView.printWinners(winningCars);
     }
 
-    private static List<Car> runCars(List<String> carNames, int moveCount) {
+    private static List<Car> runGame(List<String> carNames, int moveCount) {
         List<Car> cars = new ArrayList<>();
 
         for (String carName : carNames) {
@@ -55,6 +55,4 @@ public class Application {
         }
         return cars;
     }
-
-
 }
