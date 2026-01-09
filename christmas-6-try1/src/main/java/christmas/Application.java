@@ -157,6 +157,16 @@ public class Application {
         int finalAmount = totalAmount - totalDiscount;  // 증정 제외!
 
         // 10. 배지 판정
+        String badge = "없음";
+        if (totalBenefit >= 20000) {
+            badge = "산타";
+        }
+        if (totalBenefit >= 10000 && totalBenefit < 20000) {
+            badge = "트리";
+        }
+        if (totalBenefit >= 5000 && totalBenefit < 10000) {
+            badge = "별";
+        }
 
         // 11. 결과 출력
     }
