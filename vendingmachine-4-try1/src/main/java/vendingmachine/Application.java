@@ -120,6 +120,54 @@ public class Application {
         //    - 구매 상품명 입력
         //    - 구매 처리 (재고 감소, 금액 감소)
         //    - 종료 조건: 잔액 < 최저가 OR 재고 없음
+        while (true) {
+            System.out.println("\n투입 금액: " + userMoney + "원");
+
+            // 최저 가격 찾기
+            int minPrice = Integer.MAX_VALUE;
+            for (Product product : products) {
+                if (product.getQuantity() > 0 && product.getPrice() < minPrice) {
+                    minPrice = product.getPrice();
+                }
+            }
+
+            // 종료 조건
+            if (userMoney < minPrice) {
+                break;
+            }
+
+            System.out.println("구매할 상품명을 입력해 주세요.");
+            String productName = Console.readLine();
+
+            // 상품 찾기
+            Product foundProduct = null;
+            for (Product product : products) {
+                if (product.getName().equals(productName)) {
+                    foundProduct = product;
+                    break;
+                }
+            }
+
+            // 검증
+            if (foundProduct == null) {
+                System.out.println("[ERROR] 존재하지 않는 상품입니다.");
+                continue;
+            }
+
+            if (foundProduct.getQuantity() <= 0) {
+                System.out.println("[ERROR] 재고가 없습니다.");
+                continue;
+            }
+
+            if (userMoney < foundProduct.getPrice()) {
+                System.out.println("[ERROR] 금액이 부족합니다.");
+                continue;
+            }
+
+            // 구매 처리
+            foundProduct.decreaseQuantity();
+            userMoney -= foundProduct.getPrice();
+        }
 
         // 7. 잔돈 반환 (보유 동전으로 최대한)
 
