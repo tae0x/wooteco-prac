@@ -33,12 +33,12 @@ public class Application {
 
         System.out.println("시도할 횟수는 몇 회인가요?");
         String tryInput = Console.readLine();
-        int tryParsedInput;
+        int moveCount;
 
         try {
-            tryParsedInput = Integer.parseInt(tryInput);
+            moveCount = Integer.parseInt(tryInput);
 
-            if (tryParsedInput <= 0) {
+            if (moveCount <= 0) {
                 throw new IllegalArgumentException("이동 횟수는 양수만 가능합니다.");
             }
 
@@ -47,6 +47,20 @@ public class Application {
         }
 
         // 3. 경주 진행
+        List<Car> cars = new ArrayList<>();
+
+        for (String carName : carNames) {
+            cars.add(new Car(carName));
+        }
+
+        for (int i = 0; i < moveCount; i++) {
+
+            for (Car car : cars) {
+                car.move();
+                System.out.println(car);
+            }
+            System.out.println();
+        }
 
         // 4. 우승자 계산
 
