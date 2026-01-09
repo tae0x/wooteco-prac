@@ -55,6 +55,33 @@ public class Application {
         }
 
         // 4. 상품 정보 입력 (파싱 필요)
+        System.out.println("\n상품명과 가격, 수량을 입력해 주세요.");
+        String input = Console.readLine();
+
+        String[] productTokens = input.split(";");
+        List<Product> products = new ArrayList<>();
+
+        for (String token : productTokens) {
+            try {
+                String cleaned = token.substring(1, token.length() - 1);
+                String[] parts = cleaned.split(",");
+                String name = parts[0].trim();
+                int price = Integer.parseInt(parts[1].trim());
+                int quantity = Integer.parseInt(parts[2].trim());
+
+                if (price < 100) {
+                    throw new IllegalArgumentException("[ERROR] 가격은 100원 이상이어야 합니다.");
+                }
+                if (price % 10 != 0) {
+                    throw new IllegalArgumentException("[ERROR] 가격은 10원 단위여야 합니다.");
+                }
+                products.add(new Product(name, price, quantity));
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] 가격과 수량은 숫자여야 합니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         // 5. 투입 금액 입력
 
