@@ -102,6 +102,27 @@ public class Application {
         }
 
         // 5. 투입 금액 입력
+        int userMoney;
+
+        while (true) {
+
+            System.out.println("투입 금액을 입력해 주세요.");
+            String input = Console.readLine();
+
+            try {
+                userMoney = Integer.parseInt(input);
+
+                if (userMoney < 0) {
+                    throw new IllegalArgumentException("[ERROR] 금액은 양수여야 합니다.");
+                }
+                break;
+
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] 금액은 숫자여야 합니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         // 6. 상품 구매(반복)
 
