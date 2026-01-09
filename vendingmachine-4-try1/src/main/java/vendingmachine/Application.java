@@ -5,9 +5,23 @@ import camp.nextstep.edu.missionutils.Console;
 public class Application {
     public static void main(String[] args) {
         // 1. 자판기 보유 금액 입력
-        System.out.println("자판기가 보유하고 있는 금액을 입력해 주세요.");
-        String input = Console.readLine();
-        int machineAmount = Integer.parseInt(input);
+        int machineAmount;
+        while (true) {
+            System.out.println("자판기가 보유하고 있는 금액을 입력해 주세요.");
+            String input = Console.readLine();
+            try {
+                machineAmount = Integer.parseInt(input);
+
+                if (machineAmount < 0) {
+                    throw new IllegalArgumentException("[ERROR] 금액은 양수여야 합니다.");
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("[ERROR] 금액은 숫자여야 합니다.");
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
 
         // 2. 보유 금액으로 동전 랜덤 생성
 
