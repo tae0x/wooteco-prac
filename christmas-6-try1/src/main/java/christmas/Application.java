@@ -145,8 +145,16 @@ public class Application {
         }
 
         // 8. 증정 이벤트
+        boolean hasGift = (totalAmount >= 120000);
+        int giftPrice = 0;
+        if (hasGift) {
+            giftPrice = 25000;  // 샴페인 가격
+        }
 
         // 9. 총혜택 금액 / 할인 후 결제 금액
+        int totalDiscount = christmasDiscount + weekdayDiscount + weekendDiscount + specialDiscount;
+        int totalBenefit = totalDiscount + giftPrice;  // 증정 포함
+        int finalAmount = totalAmount - totalDiscount;  // 증정 제외!
 
         // 10. 배지 판정
 
