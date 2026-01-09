@@ -25,6 +25,16 @@ public class Lotto {
         }
     }
 
+    public int matchCount(Lotto other) {
+        int count = 0;
+        for (Integer number : numbers) {
+            if (other.contains(number)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public boolean contains(int number) {
         return numbers.contains(number);
     }

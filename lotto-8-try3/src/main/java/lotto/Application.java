@@ -4,7 +4,9 @@ import camp.nextstep.edu.missionutils.Console;
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -108,6 +110,20 @@ public class Application {
         }
 
         // 5. 당첨 계산 및 통계
+        Map<Rank, Integer> result = new HashMap<>();
+
+        for (Rank rank : Rank.values()) {
+            result.put(rank, 0);
+        }
+
+        for (Lotto lotto : lottos) {
+            int matchCount = lotto.matchCount(winningLotto);
+            boolean bonusMatch = lotto.contains(bonusNumber);
+
+            Rank rank = Rank.valueOf(matchCount, bonusMatch);
+
+            result.put(rank, result.get(rank) + 1);
+        }
 
         // 6. 결과 출력
     }
