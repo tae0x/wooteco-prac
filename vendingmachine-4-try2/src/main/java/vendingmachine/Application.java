@@ -185,5 +185,11 @@ public class Application {
         }
 
         // 8. 잔돈 현황 출력
+        System.out.println("잔돈");
+        for (Coin coin : Coin.values()) {
+            if (change.get(coin) > 0) {
+                System.out.println(coin.getAmount() + "원 - " + change.get(coin) + "개");
+            }
+        }
     }
 }
