@@ -28,7 +28,7 @@ public class Application {
             }
         }
 
-        // 2. 자판기가 보유한 동전 게산
+        // 2. 자판기가 보유한 동전 랜덤 생성
         Map<Coin, Integer> coinCount = new HashMap<>();
         for (Coin coin : Coin.values()) {
             coinCount.put(coin, 0);
@@ -57,6 +57,10 @@ public class Application {
         }
 
         // 3. 보유한 동전 현황 출력
+        System.out.println("\n자판기가 보유한 동전");
+        for (Coin coin : Coin.values()) {
+            System.out.println(coin.getAmount() + "원 - " + coinCount.get(coin) + "개");
+        }
 
         // 4. 상품 입력
 
