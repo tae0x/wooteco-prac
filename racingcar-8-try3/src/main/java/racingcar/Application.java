@@ -1,6 +1,5 @@
 package racingcar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Application {
@@ -12,30 +11,14 @@ public class Application {
         int moveCount = InputView.readMoveCount();
 
         // 3. 경주 진행
-        List<Car> cars = runGame(carNames, moveCount);
+        RacingGame game = new RacingGame(carNames);
+        game.run(moveCount);
+        List<Car> winners = game.findWinners();
 
-        // 4. 우승자 계산
-        printWinner(cars);
+        // 4. 우승자 출력
+        OutputView.printWinners(winners);
     }
-
-    private static void printWinner(List<Car> cars) {
-        int maxPosition = 0;
-
-        for (Car car : cars) {
-            maxPosition = car.compareMaxPosition(maxPosition);
-        }
-
-        List<Car> winningCars = new ArrayList<>();
-
-        for (Car car : cars) {
-            if (car.isSameMaxPosition(maxPosition)) {
-                winningCars.add(car);
-            }
-        }
-
-        OutputView.printWinners(winningCars);
-    }
-
+/*
     private static List<Car> runGame(List<String> carNames, int moveCount) {
         List<Car> cars = new ArrayList<>();
 
@@ -55,4 +38,5 @@ public class Application {
         }
         return cars;
     }
+ */
 }
