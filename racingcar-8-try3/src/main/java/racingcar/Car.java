@@ -23,14 +23,17 @@ public class Car {
         return name;
     }
 
+    public int compareMaxPosition(int maxPosition) {
+        return Math.max(position, maxPosition);
+    }
+
+    public boolean isSameMaxPosition(int maxPosition) {
+        return this.position == maxPosition;
+    }
+
     @Override
     public String toString() {
 
-        StringBuilder distance = new StringBuilder();
-        for (int i = 0; i < position; i++) {
-            distance.append("-");
-        }
-
-        return name + " : " + distance.toString();
+        return name + " : " + "-".repeat(position);
     }
 }

@@ -53,6 +53,8 @@ public class Application {
             cars.add(new Car(carName));
         }
 
+        System.out.println("\n실행 결과");
+
         for (int i = 0; i < moveCount; i++) {
 
             for (Car car : cars) {
@@ -63,6 +65,29 @@ public class Application {
         }
 
         // 4. 우승자 계산
+        int maxPosition = 0;
 
+        for (Car car : cars) {
+            maxPosition = car.compareMaxPosition(maxPosition);
+        }
+
+        List<Car> winningCars = new ArrayList<>();
+
+        for (Car car : cars) {
+            if (car.isSameMaxPosition(maxPosition)) {
+                winningCars.add(car);
+            }
+        }
+
+        System.out.print("최종 우승자 : ");
+
+        for (int i = 0; i < winningCars.size(); i++) {
+
+            System.out.print(winningCars.get(i).getName());
+            if (i < winningCars.size() - 1) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }
