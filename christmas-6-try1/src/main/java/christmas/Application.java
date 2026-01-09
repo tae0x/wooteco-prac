@@ -169,5 +169,65 @@ public class Application {
         }
 
         // 11. 결과 출력
+        System.out.println("12월 " + visitDate + "일에 우테코 식당에서 받을 이벤트 혜택 미리 보기!");
+        System.out.println();
+
+        // 주문 메뉴
+        System.out.println("<주문 메뉴>");
+        for (Menu menu : orders.keySet()) {
+            System.out.println(menu.getName() + " " + orders.get(menu) + "개");
+        }
+        System.out.println();
+
+        // 할인 전 총주문 금액
+        System.out.println("<할인 전 총주문 금액>");
+        System.out.println(String.format("%,d원", totalAmount));
+        System.out.println();
+
+        // 증정 메뉴
+        System.out.println("<증정 메뉴>");
+        if (hasGift) {
+            System.out.println("샴페인 1개");
+        } else {
+            System.out.println("없음");
+        }
+        System.out.println();
+
+        // 혜택 내역
+        System.out.println("<혜택 내역>");
+        if (totalBenefit == 0) {
+            System.out.println("없음");
+        } else {
+            if (christmasDiscount > 0) {
+                System.out.println("크리스마스 디데이 할인: -" + String.format("%,d원", christmasDiscount));
+            }
+            if (weekdayDiscount > 0) {
+                System.out.println("평일 할인: -" + String.format("%,d원", weekdayDiscount));
+            }
+            if (weekendDiscount > 0) {
+                System.out.println("주말 할인: -" + String.format("%,d원", weekendDiscount));
+            }
+            if (specialDiscount > 0) {
+                System.out.println("특별 할인: -" + String.format("%,d원", specialDiscount));
+            }
+            if (hasGift) {
+                System.out.println("증정 이벤트: -" + String.format("%,d원", giftPrice));
+            }
+        }
+        System.out.println();
+
+        // 총혜택 금액
+        System.out.println("<총혜택 금액>");
+        System.out.println("-" + String.format("%,d원", totalBenefit));
+        System.out.println();
+
+        // 할인 후 예상 결제 금액
+        System.out.println("<할인 후 예상 결제 금액>");
+        System.out.println(String.format("%,d원", finalAmount));
+        System.out.println();
+
+        // 12월 이벤트 배지
+        System.out.println("<12월 이벤트 배지>");
+        System.out.println(badge);
     }
 }
