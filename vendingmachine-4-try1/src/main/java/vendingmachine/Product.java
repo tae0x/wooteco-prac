@@ -1,6 +1,7 @@
 package vendingmachine;
 
 public class Product {
+
     private final String name;
     private final int price;
     private int quantity;
