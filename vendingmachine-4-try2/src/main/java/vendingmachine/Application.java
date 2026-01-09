@@ -106,7 +106,7 @@ public class Application {
 
         while (true) {
 
-            System.out.println("투입 금액을 입력해 주세요.");
+            System.out.println("\n투입 금액을 입력해 주세요.");
             String input = Console.readLine();
 
             try {
@@ -125,8 +125,64 @@ public class Application {
         }
 
         // 6. 상품 구매(반복)
+        while (true) {
+            System.out.println("\n투입 금액: " + userMoney + "원");
+
+            int minPrice = Integer.MAX_VALUE;
+
+            for (Product product : products) {
+                if (product.getPrice() < minPrice && product.getQuantity() > 0) {
+                    minPrice = product.getPrice();
+                }
+            }
+
+            if (userMoney < minPrice) {
+                break;
+            }
+
+            System.out.println("구매할 상품명을 입력해 주세요.");
+            String productName = Console.readLine();
+
+            Product foundProduct = null;
+            for (Product product : products) {
+                if (product.getName().equals(productName)) {
+                    foundProduct = product;
+                    break;
+                }
+            }
+
+            if (foundProduct == null) {
+                System.out.println("[ERROR] 존재하지 않는 상품입니다.");
+                continue;
+            }
+
+            if (foundProduct.getQuantity() <= 0) {
+                System.out.println("[ERROR] 재고가 없습니다.");
+                continue;
+            }
+
+            if (userMoney < foundProduct.getPrice()) {
+                System.out.println("[ERROR] 금액이 부족합니다.");
+                continue;
+            }
+
+            foundProduct.decreaseQuantity();
+            userMoney -= foundProduct.getPrice();
+
+        }
 
         // 7. 잔돈 계산
+        Map<Coin, Integer> change = new HashMap<>();
+        for (Coin coin : Coin.values()) {
+            int coinAmount = coin.getAmount();
+            int available = coinCount.get(coin);
+            int needed = userMoney / coinAmount;
+
+            int useCount = Math.min(available, needed);
+
+            change.put(coin, useCount);
+            userMoney -= (coinAmount * useCount);
+        }
 
         // 8. 잔돈 현황 출력
     }
