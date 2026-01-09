@@ -32,17 +32,8 @@ public class Application {
                 winningCars.add(car);
             }
         }
-
-        System.out.print("최종 우승자 : ");
-
-        for (int i = 0; i < winningCars.size(); i++) {
-
-            System.out.print(winningCars.get(i).getName());
-            if (i < winningCars.size() - 1) {
-                System.out.print(", ");
-            }
-        }
-        System.out.println();
+        
+        OutputView.printWinners(winningCars);
     }
 
     private static List<Car> runCars(List<String> carNames, int moveCount) {
@@ -52,15 +43,15 @@ public class Application {
             cars.add(new Car(carName));
         }
 
-        System.out.println("\n실행 결과");
+        OutputView.printRaceStart();
 
         for (int i = 0; i < moveCount; i++) {
 
             for (Car car : cars) {
                 car.move();
-                System.out.println(car);
+                OutputView.printCarStatus(car);
             }
-            System.out.println();
+            OutputView.printNewLine();
         }
         return cars;
     }
