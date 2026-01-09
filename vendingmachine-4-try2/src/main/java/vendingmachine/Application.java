@@ -1,6 +1,11 @@
 package vendingmachine;
 
 import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -24,6 +29,32 @@ public class Application {
         }
 
         // 2. 자판기가 보유한 동전 게산
+        Map<Coin, Integer> coinCount = new HashMap<>();
+        for (Coin coin : Coin.values()) {
+            coinCount.put(coin, 0);
+        }
+
+        int remaining = machineAmount;
+
+        while (remaining > 0) {
+            List<Integer> possibleCoins = new ArrayList<>();
+            for (Coin coin : Coin.values()) {
+                if (coin.getAmount() <= remaining) {
+                    possibleCoins.add(coin.getAmount());
+                }
+            }
+
+            int selectedAmount = Randoms.pickNumberInList(possibleCoins);
+
+            for (Coin coin : Coin.values()) {
+                if (coin.getAmount() == selectedAmount) {
+                    coinCount.put(coin, coinCount.get(coin) + 1);
+                    break;
+                }
+            }
+
+            remaining -= selectedAmount;
+        }
 
         // 3. 보유한 동전 현황 출력
 
