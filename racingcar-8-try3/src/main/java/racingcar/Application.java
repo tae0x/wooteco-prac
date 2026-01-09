@@ -31,6 +31,21 @@ public class Application {
 
         // 2. 이동 횟수 입력
 
+        System.out.println("시도할 횟수는 몇 회인가요?");
+        String tryInput = Console.readLine();
+        int tryParsedInput;
+
+        try {
+            tryParsedInput = Integer.parseInt(tryInput);
+
+            if (tryParsedInput <= 0) {
+                throw new IllegalArgumentException("이동 횟수는 양수만 가능합니다.");
+            }
+
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("숫자만 입력하세요.");
+        }
+
         // 3. 경주 진행
 
         // 4. 우승자 계산
