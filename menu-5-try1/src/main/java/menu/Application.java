@@ -2,7 +2,9 @@ package menu;
 
 import camp.nextstep.edu.missionutils.Console;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Application {
     public static void main(String[] args) {
@@ -42,7 +44,40 @@ public class Application {
             }
         }
 
-        // 2. 각 코치별 못 먹는 메뉴 입력
+        // 2. 각 코치별 못 먹는 메뉴 입력 (0~2개)
+        Map<String, List<String>> cannotEat = new HashMap<>();
+
+        for (String coach : coaches) {
+            while (true) {
+                System.out.println();
+                System.out.println(coach + "(이)가 못 먹는 메뉴를 입력해 주세요.");
+                String input = Console.readLine();
+
+                try {
+                    List<String> dislikedMenus = new ArrayList<>();
+
+                    // 빈 값이면 빈 리스트
+                    if (!input.trim().isEmpty()) {
+                        String[] menus = input.split(",");
+
+                        for (String menu : menus) {
+                            dislikedMenus.add(menu.trim());
+                        }
+
+                        // 0~2개 검증
+                        if (dislikedMenus.size() > 2) {
+                            throw new IllegalArgumentException("[ERROR] 못 먹는 메뉴는 최대 2개까지 입력 가능합니다.");
+                        }
+                    }
+
+                    cannotEat.put(coach, dislikedMenus);
+                    break;
+
+                } catch (IllegalArgumentException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
 
         // 3. 5일간 반복:
         //    - 카테고리 랜덤 선택 (같은 카테고리 2회 초과 방지)
