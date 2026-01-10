@@ -139,6 +139,29 @@ public class Application {
 
         // 4. 결과 출력
 
+        System.out.println();
+        System.out.println("메뉴 추천 결과입니다.");
+
+        // 첫 번째 줄: 요일
+        System.out.println("[ 구분 | 월요일 | 화요일 | 수요일 | 목요일 | 금요일 ]");
+
+        // 두 번째 줄: 카테고리
+        System.out.print("[ 카테고리");
+        for (Category category : weekCategories) {
+            System.out.print(" | " + category.getName());
+        }
+        System.out.println(" ]");
+
+        // 각 코치별 메뉴
+        for (String coach : coaches) {
+            System.out.print("[ " + coach);
+            List<String> menus = coachMenus.get(coach);
+            for (String menu : menus) {
+                System.out.print(" | " + menu);
+            }
+            System.out.println(" ]");
+        }
+
 
         System.out.println();
         System.out.println("추천을 완료했습니다.");
