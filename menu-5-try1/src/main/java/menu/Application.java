@@ -1,6 +1,7 @@
 package menu;
 
 import camp.nextstep.edu.missionutils.Console;
+import camp.nextstep.edu.missionutils.Randoms;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +83,62 @@ public class Application {
         // 3. 5일간 반복:
         //    - 카테고리 랜덤 선택 (같은 카테고리 2회 초과 방지)
         //    - 각 코치별 메뉴 추천 (중복 방지, 못 먹는 메뉴 제외)
+        // 3. 5일간 메뉴 추천
+        List<Category> weekCategories = new ArrayList<>();  // 5일간 카테고리
+        Map<String, List<String>> coachMenus = new HashMap<>();  // 코치별 추천 메뉴
+
+        // 각 코치별 빈 리스트 초기화
+        for (String coach : coaches) {
+            coachMenus.put(coach, new ArrayList<>());
+        }
+
+        // 카테고리 사용 횟수 추적
+        Map<Category, Integer> categoryCount = new HashMap<>();
+        for (Category category : Category.values()) {
+            categoryCount.put(category, 0);
+        }
+
+        // 5일간 반복
+        for (int day = 0; day < 5; day++) {
+
+            // 카테고리 선택 (같은 카테고리 최대 2회)
+            Category selectedCategory = null;
+            while (true) {
+                int number = Randoms.pickNumberInRange(1, 5);
+                Category category = Category.findByNumber(number);
+
+                if (categoryCount.get(category) < 2) {
+                    selectedCategory = category;
+                    break;
+                }
+            }
+
+            weekCategories.add(selectedCategory);
+            categoryCount.put(selectedCategory, categoryCount.get(selectedCategory) + 1);
+
+            // 각 코치별 메뉴 추천
+            for (String coach : coaches) {
+                List<String> alreadyRecommended = coachMenus.get(coach);
+                List<String> cannotEatList = cannotEat.get(coach);
+                List<String> menus = selectedCategory.getMenus();
+
+                // 메뉴 선택 (중복 X, 못 먹는 메뉴 제외)
+                String selectedMenu = null;
+                while (true) {
+                    String menu = Randoms.shuffle(menus).get(0);
+
+                    if (!alreadyRecommended.contains(menu) && !cannotEatList.contains(menu)) {
+                        selectedMenu = menu;
+                        break;
+                    }
+                }
+
+                coachMenus.get(coach).add(selectedMenu);
+            }
+        }
 
         // 4. 결과 출력
+
 
         System.out.println();
         System.out.println("추천을 완료했습니다.");
